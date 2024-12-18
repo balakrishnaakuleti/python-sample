@@ -6,4 +6,4 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    return "Hello, World!. This is a sample app deployed on Spoke 1"
+    return "Hello, World! Spoke App."
