@@ -1,4 +1,4 @@
 streamlit
-azure-identity
+azure-identity==1.19.0
 azure-keyvault-secrets
-azure-core
+azure-core==1.32.0
