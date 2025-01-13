@@ -1,3 +1,4 @@
 streamlit
 azure-identity
 azure-keyvault-secrets
+azure-core
