@@ -6,6 +6,7 @@ import os
 from app import show_chat_app
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
+from azure.core.credentials import AccessTokenInfo
 
 # Secrets from keyvault
 key_vault_url = "https://kv-qna-news.vault.azure.net/"
@@ -92,6 +93,6 @@ else:
         
         if "access_token" in result:
             st.session_state.access_token = result['access_token']
-            st.experimental_rerun()
+            st.rerun()
         else:
             st.write("Error: " + result.get("error_description", "Unknown error"))
