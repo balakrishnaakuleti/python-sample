@@ -2,3 +2,4 @@ streamlit
 azure-identity==1.17.1
 azure-keyvault-secrets
 azure-core==1.30.2
+openai
