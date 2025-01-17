@@ -1,4 +1,23 @@
 import streamlit as st
+from openai import AzureOpenAI
+
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.secrets import SecretClient
+
+# Set up the SecretClient
+credential = DefaultAzureCredential()
+vault_url = "https://kv-qna-news.vault.azure.net/"
+secret_client = SecretClient(vault_url=vault_url, credential=credential)
+
+# Open AI Section
+api_version = "2024-08-01-preview"
+endpoint = "https://cba.openai.azure.com"
+
+ai_client = AzureOpenAI(
+    api_version=api_version,
+    azure_endpoint=endpoint,
+    api_key=secret_client.get_secret("OPENAI-KEY").value,
+)
 
 def show_chat_app():
     # Title and description of the app
@@ -7,20 +26,6 @@ def show_chat_app():
 
     st.write("""Disclaimer:
     For your privacy and security, please do not share any personally identifiable information (PII), such as your full name, address, phone number, or financial details. This chatbot is not designed to store or process sensitive data, and sharing such information could compromise your privacy. Always exercise caution when interacting online.""")
-
-
-    # Function to simulate the chatbot response
-    def chatbot_response(user_message):
-        # Basic predefined responses
-        responses = {
-            "hi": "Hello! How can I assist you today?",
-            "hello": "Hi there! How can I help you?",
-            "how are you": "I'm just a bot, but I'm doing great! How about you?",
-            "bye": "Goodbye! Have a great day!",
-        }
-        
-        # Default response for unknown messages
-        return responses.get(user_message.lower(), "I'm sorry, I didn't understand that. Can you ask something else?")
 
     # Create a session state to store chat history
     if "messages" not in st.session_state:
@@ -32,13 +37,24 @@ def show_chat_app():
     # Process the user input and respond when the user presses Enter (submit)
     if user_input:
         # Append the user's message to the chat history
-        st.session_state.messages.append(f"You: {user_input}")
+        st.session_state.messages.append({"role": "user", "content": user_input})
         
         # Get the chatbot's response
-        bot_reply = chatbot_response(user_input)
-        
-        # Append the bot's response to the chat history
-        st.session_state.messages.append(f"Bot: {bot_reply}")
+        try:
+            # Call the OpenAI API to get a response
+            response = ai_client.chat.completions.create(
+                model="gpt-4o",  # You can change the model (e.g., gpt-4, gpt-3.5-turbo)
+                messages=st.session_state.messages  # Provide the chat history to maintain context
+            )
+
+            # Extract the assistant's reply
+            bot_reply = response.choices[0].message.content
+
+            # Append the assistant's response to the chat history
+            st.session_state.messages.append({"role": "assistant", "content": bot_reply})
+            st.session_state.messages.append(f"Bot: {bot_reply}")
+        except Exception as e:
+                return f"Error: {e}"
         
         # **Don't reset the input field directly. Streamlit will clear the input box automatically.**
         # Just rely on Streamlit to clear it after each submission
@@ -46,3 +62,5 @@ def show_chat_app():
     # Display the chat history
     for message in st.session_state.messages:
         st.write(message)
+
+show_chat_app()
