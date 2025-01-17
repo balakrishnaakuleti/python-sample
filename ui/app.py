@@ -52,7 +52,6 @@ def show_chat_app():
 
             # Append the assistant's response to the chat history
             st.session_state.messages.append({"role": "assistant", "content": bot_reply})
-            st.session_state.messages.append(f"Bot: {bot_reply}")
         except Exception as e:
                 return f"Error: {e}"
         
@@ -61,6 +60,5 @@ def show_chat_app():
 
     # Display the chat history
     for message in st.session_state.messages:
-        st.write(message)
-
+        st.write(message["role"],": ",message["content"])
 show_chat_app()
