@@ -2,7 +2,7 @@ from azure.core.credentials import AzureKeyCredential
 from azure.search.documents import SearchClient
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
-from ..util import constants
+from app.src.util import constants
 
 # Secrets from keyvault
 credential = DefaultAzureCredential()

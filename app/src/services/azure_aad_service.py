@@ -2,7 +2,7 @@ import msal
 import requests
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
-from ..util import constants
+from app.src.util import constants
 
 # Secrets from keyvault
 credential = DefaultAzureCredential()
