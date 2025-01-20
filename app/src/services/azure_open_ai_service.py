@@ -4,7 +4,7 @@ from openai import AzureOpenAI
 
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
-import constants
+from ..util import constants
 
 # Secrets from keyvault
 credential = DefaultAzureCredential()
