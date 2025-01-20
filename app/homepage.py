@@ -1,6 +1,6 @@
 import streamlit as st
-from ui.chat_bot import show_chat_app
-from azure_aad_service import get_authorization_url, get_token_from_code, get_user_profile
+from chat_bot import show_chat_app
+from services.azure_aad_service import get_authorization_url, get_token_from_code, get_user_profile
 
 # Streamlit app UI
 st.title("Welcome to the Question and Answers Chatbot on news articles!!!")

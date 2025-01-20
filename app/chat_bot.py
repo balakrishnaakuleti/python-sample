@@ -1,7 +1,7 @@
 import streamlit as st
 
-from azure_ai_search_service import ai_search
-from azure_open_ai_service import ai_answer
+from services.azure_ai_search_service import ai_search
+from services.azure_open_ai_service import ai_answer
 
 system_prompt ="You are an intelligent language assistant who can answer questions from the provided news article. You should strictly asnswer the questions only from the news article provided. If you are unable to find the apt answer from the article below, please say that you would be unable to help. Some samples question and answers Question 1 : How to prepare dosa? Answer: Sorry this question doesn't seem to be related to news. Would be unable to answer. Please ask some relevant question on news. News article starts here: "
 
