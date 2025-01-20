@@ -4,3 +4,4 @@ azure-keyvault-secrets
 azure-core==1.30.2
 azure-search-documents
 openai
+openai
