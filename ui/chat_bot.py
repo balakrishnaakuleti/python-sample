@@ -1,0 +1,49 @@
+import streamlit as st
+
+from azure_ai_search_service import ai_search
+from azure_open_ai_service import ai_answer
+
+system_prompt ="You are an intelligent language assistant who can answer questions from the provided news article. You should strictly asnswer the questions only from the news article provided. If you are unable to find the apt answer from the article below, please say that you would be unable to help. Some samples question and answers Question 1 : How to prepare dosa? Answer: Sorry this question doesn't seem to be related to news. Would be unable to answer. Please ask some relevant question on news. News article starts here: "
+
+def show_chat_app():
+    # Title and description of the app
+    st.title("Intelligent QnA Chatbot on the news articles")
+    st.write("This is a simple chat application where you can ask questions on the news articles. Feel free to ask anything!")
+
+    st.write("""Disclaimer:
+    For your privacy and security, please do not share any personally identifiable information (PII), such as your full name, address, phone number, or financial details. This chatbot is not designed to store or process sensitive data, and sharing such information could compromise your privacy. Always exercise caution when interacting online.""")
+
+    # Create a session state to store chat history
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+
+    # Input box for the user to enter their message
+    user_input = st.text_input("You:", key="user_input")
+
+    # Process the user input and respond when the user presses Enter (submit)
+    if user_input:
+        # AI Search
+        relevant_news_article = ai_search(user_input)
+        st.session_state.messages.append({"role": "system", "content": system_prompt+relevant_news_article})
+        # Append the user's message to the chat history
+        st.session_state.messages.append({"role": "user", "content": user_input})
+        
+        # Get the chatbot's response
+        try:
+            # Call the OpenAI API to get a response
+            bot_reply = ai_answer(st.session_state.messages)
+
+            # Append the assistant's response to the chat history
+            st.session_state.messages.append({"role": "assistant", "content": bot_reply})
+        except Exception as e:
+                return f"Error: {e}"
+        
+        # **Don't reset the input field directly. Streamlit will clear the input box automatically.**
+        # Just rely on Streamlit to clear it after each submission
+
+    # Display the chat history
+    for message in st.session_state.messages:
+        role = message["role"]
+        if role != "system":
+            st.write(role,": ",message["content"])
+show_chat_app()

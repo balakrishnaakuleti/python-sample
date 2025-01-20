@@ -1,4 +1,6 @@
 streamlit
-azure-identity
+azure-identity==1.17.1
 azure-keyvault-secrets
-azure-core
+azure-core==1.30.2
+azure-search-documents
+openai
