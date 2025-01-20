@@ -1,1 +1,1 @@
-python -m streamlit run app/homepage.py --server.port 8000 --server.address 0.0.0.0
+python -m streamlit run app/src/homepage.py --server.port 8000 --server.address 0.0.0.0
