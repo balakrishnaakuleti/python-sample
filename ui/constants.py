@@ -8,15 +8,16 @@ VAULT_OPENAI_KEY= "OPENAI-KEY"
 VAULT_AI_SEARCH_API_KEY = "ACS-KEY" 
 
 # AAD SECTION
+APP_NAME = "qna-news"
 AAD_AUTHORITY = "https://login.microsoftonline.com/"
-AAD_REDIRECT_URI = "https://qna-news.azurewebsites.net/"
+AAD_REDIRECT_URI = f"https://{APP_NAME}.azurewebsites.net/"
 AAD_SCOPE = ["User.Read"]
 AAD_PROFILE_URL = "https://graph.microsoft.com/v1.0/me"
 
-
 #Open AI
+OPEN_AI_ACCOUNT_NAME="cba"
 OPEN_AI_API_VERSION = "2024-08-01-preview"
-OPEN_AI_ENDPOINT = "https://cba.openai.azure.com"
+OPEN_AI_ENDPOINT = f"https://{OPEN_AI_ACCOUNT_NAME}.openai.azure.com"
 GPT_MODEL_NAME="gpt-4o"
 
 #AI SEARCH
