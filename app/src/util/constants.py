@@ -23,4 +23,5 @@ GPT_MODEL_NAME="gpt-4o"
 #AI SEARCH
 AI_SEARCH_ACCOUNT_NAME="qna-news-ai-search"
 AI_SEARCH_ENDPOINT = f"https://{AI_SEARCH_ACCOUNT_NAME}.search.windows.net"
-AI_SEARCH_INDEX_NAME="qna-news"
+AI_SEARCH_INDEX_NAME="qna-articles-index"
+SEMANTIC_SEARCH_CONFIG = "qna-articles-index-semantic-configuration"

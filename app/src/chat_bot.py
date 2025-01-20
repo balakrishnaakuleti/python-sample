@@ -3,7 +3,7 @@ import streamlit as st
 from services.azure_ai_search_service import ai_search
 from services.azure_open_ai_service import ai_answer
 
-system_prompt ="You are an intelligent language assistant who can answer questions from the provided news article. You should strictly asnswer the questions only from the news article provided. If you are unable to find the apt answer from the article below, please say that you would be unable to help. Some samples question and answers Question 1 : How to prepare dosa? Answer: Sorry this question doesn't seem to be related to news. Would be unable to answer. Please ask some relevant question on news. News article starts here: "
+system_prompt ="You are an intelligent language assistant who can answer questions from the provided news article. You can greet them back politey if they greet you saying hi. You can briefly explain your purpose. Once the user asks the question, you should strictly asnswer the questions only from the news article provided. If you are unable to find the apt answer from the article below, please say that you would be unable to help. Some samples question and answers Question 1 : How to prepare dosa? Answer: Sorry this question doesn't seem to be related to news. Would be unable to answer. Please ask some relevant question on news. News article starts here: "
 
 def show_chat_app():
     # Title and description of the app
@@ -21,17 +21,17 @@ def show_chat_app():
     user_input = st.text_input("You:", key="user_input")
 
     # Process the user input and respond when the user presses Enter (submit)
+    st.session_state.messages.append({"role": "system", "content": system_prompt})
     if user_input:
-        # AI Search
-        relevant_news_article = ai_search(user_input)
-        st.session_state.messages.append({"role": "system", "content": system_prompt+relevant_news_article})
-        # Append the user's message to the chat history
+        #Add user utterance to the history
         st.session_state.messages.append({"role": "user", "content": user_input})
-        
         # Get the chatbot's response
         try:
+            # AI Search
+            relevant_news_article = ai_search(user_input)
+            # Append the user's message to the chat history
             # Call the OpenAI API to get a response
-            bot_reply = ai_answer(st.session_state.messages)
+            bot_reply = ai_answer(st.session_state.messages,relevant_news_article)
 
             # Append the assistant's response to the chat history
             st.session_state.messages.append({"role": "assistant", "content": bot_reply})

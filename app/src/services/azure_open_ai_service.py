@@ -16,9 +16,10 @@ ai_client = AzureOpenAI(
     api_key=client.get_secret(constants.VAULT_OPENAI_KEY).value,
 )
 
-def ai_answer(messages):
+def ai_answer(messages, relevant_news_article):
     # Get the chatbot's response
     try:
+        messages.append({"role": "system", "content": "News article:"+relevant_news_article})
         # Call the OpenAI API to get a response
         response = ai_client.chat.completions.create(
             model=constants.GPT_MODEL_NAME,
