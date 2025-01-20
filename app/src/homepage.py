@@ -16,7 +16,7 @@ if 'access_token' in st.session_state:
     # Logout button
     if st.button('Logout'):
         del st.session_state.access_token
-        st.experimental_rerun()
+        st.rerun()
 else:
     # If not logged in, show login button
     if st.button("Login with Azure AD"):
