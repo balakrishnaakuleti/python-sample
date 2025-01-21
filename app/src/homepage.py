@@ -24,7 +24,7 @@ else:
         st.markdown(f'<a href="{auth_url}" target="_self">Please login using this link</a>', unsafe_allow_html=True)
 
     # Handle the redirect (After login in Azure, Azure will redirect back to this URI with code)
-    query_params = st.experimental_get_query_params()
+    query_params = st.query_params()
     if 'code' in query_params:
         code = query_params['code'][0]
         result = get_token_from_code(code)
