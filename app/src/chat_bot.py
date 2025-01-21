@@ -2,6 +2,7 @@ import streamlit as st
 
 from services.azure_ai_search_service import ai_search
 from services.azure_open_ai_service import ai_answer
+from services.azure_pii_service import redact_pii
 
 system_prompt ="You are an intelligent language assistant who can answer questions from the provided news article. You can greet them back politey if they greet you saying hi. You can briefly explain your purpose. Once the user asks the question, you should strictly asnswer the questions only from the news article provided. If you are unable to find the apt answer from the article below, please say that you would be unable to help. Some samples question and answers Question 1 : How to prepare dosa? Answer: Sorry this question doesn't seem to be related to news. Would be unable to answer. Please ask some relevant question on news. News article starts here: "
 
@@ -23,12 +24,16 @@ def show_chat_app():
     # Process the user input and respond when the user presses Enter (submit)
     st.session_state.messages.append({"role": "system", "content": system_prompt})
     if user_input:
-        #Add user utterance to the history
-        st.session_state.messages.append({"role": "user", "content": user_input})
         # Get the chatbot's response
         try:
+            # PII detection and redaction
+            user_input = redact_pii(user_input)
+
             # AI Search
             relevant_news_article = ai_search(user_input)
+
+            #Add redacted user utterance to the history
+            st.session_state.messages.append({"role": "user", "content": user_input})
             # Append the user's message to the chat history
             # Call the OpenAI API to get a response
             bot_reply = ai_answer(st.session_state.messages,relevant_news_article)

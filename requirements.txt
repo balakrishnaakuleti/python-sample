@@ -4,3 +4,4 @@ azure-keyvault-secrets
 azure-core==1.30.2
 azure-search-documents==11.5.2
 openai
+azure-ai-textanalytics==5.2.0

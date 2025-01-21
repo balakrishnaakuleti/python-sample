@@ -6,6 +6,7 @@ AAD_VAULT_CLIENT_SECRET = "CLIENT-SECRET"
 AAD_VAULT_TENTNT_ID = "TENANT-ID"
 VAULT_OPENAI_KEY= "OPENAI-KEY"
 VAULT_AI_SEARCH_API_KEY = "ACS-KEY" 
+VAULT_LANG_KEY="LANG-KEY"
 
 # AAD SECTION
 APP_NAME = "qna-news"
@@ -25,3 +26,6 @@ AI_SEARCH_ACCOUNT_NAME="qna-news-ai-search"
 AI_SEARCH_ENDPOINT = f"https://{AI_SEARCH_ACCOUNT_NAME}.search.windows.net"
 AI_SEARCH_INDEX_NAME="qna-articles-index"
 SEMANTIC_SEARCH_CONFIG = "qna-articles-index-semantic-configuration"
+
+# LAGNGUAGE SERVICE FOR PII
+LANG_END_POINT= "https://lang-service-qna.cognitiveservices.azure.com/"
