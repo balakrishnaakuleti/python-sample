@@ -4,7 +4,7 @@ from app.src.services.azure_ai_search_service import ai_search
 from app.src.services.azure_open_ai_service import ai_answer
 from app.src.services.azure_pii_service import redact_pii
 
-system_prompt ="You are an intelligent language assistant who can answer questions from the provided news article. You can greet them back politey if they greet you saying hi. You can briefly explain your purpose. Once the user asks the question, you should strictly asnswer the questions only from the news article provided. If you are unable to find the apt answer from the article below, please say that you would be unable to help. Some samples question and answers Question 1 : How to prepare dosa? Answer: Sorry this question doesn't seem to be related to news. Would be unable to answer. Please ask some relevant question on news. News article starts here: "
+system_prompt ="You are an intelligent language assistant who can answer questions from the provided news article. You can greet them back politey if they greet you saying hi. You can briefly explain your purpose. Once the user asks the question, you should strictly asnswer the questions only from the news article provided. If you are unable to understand the user query, you can ask for clarification. If you are unable to find the apt answer from the article below, please say that you would be unable to help. Some samples question and answers Question 1 : How to prepare dosa? Answer: Sorry this question doesn't seem to be related to news. Would be unable to answer. Please ask some relevant question on news. News article starts here: "
 
 def show_chat_app():
     # Title and description of the app
