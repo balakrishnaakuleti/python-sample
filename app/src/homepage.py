@@ -1,6 +1,7 @@
 import streamlit as st
 from app.src.chat_bot import show_chat_app
 from app.src.services.azure_aad_service import get_authorization_url, get_token_from_code, get_user_profile
+import datetime
 
 def show_home_page():
     # Streamlit app UI
@@ -25,27 +26,25 @@ def show_home_page():
             st.rerun()
     else:
         # If not logged in, show login button
-        if st.button("Login with Azure AD"):
-            show_login_button()
-        else:
-            # Handle the redirect (After login in Azure, Azure will redirect back to this URI with code)
-            code = st.query_params.get("code")
-            if code is not None:
-                result = None
-                try:
-                    result = get_token_from_code(code)
-                except:
-                    st.write("Error: Unable to get token from code. Please try logging in again.")
-                    show_login_button()
-                    return
-                if "access_token" in result:
-                    st.session_state.access_token = result['access_token']
-                    st.rerun()
-                else:
-                    st.write("Logout Successful !!")
+        show_login_button()
+        # Handle the redirect (After login in Azure, Azure will redirect back to this URI with code)
+        code = st.query_params.get("code")
+        if code is not None:
+            result = None
+            try:
+                result = get_token_from_code(code)
+            except:
+                st.write("Error: Unable to get token from code. Please try logging in again.")
+                show_login_button()
+                return
+            if "access_token" in result:
+                st.session_state.access_token = result['access_token']
+                st.rerun()
+            else:
+                st.write("Logout Successful !!")
 
 def show_login_button():
-    if st.button("Login with Azure AD"):
+    if st.button(label="Login with Azure AD", key="login_button"):
         auth_url = None
         try:
                 auth_url = get_authorization_url()
