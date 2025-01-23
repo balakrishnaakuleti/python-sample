@@ -9,7 +9,12 @@ def show_home_page():
     # Show the home page if the user is authenticated
     if 'access_token' in st.session_state:
         access_token = st.session_state.access_token
-        user_profile = get_user_profile(access_token)
+        try:
+            user_profile = get_user_profile(access_token)
+        except:
+            st.write("Error: Unable to get user profile. Please try logging in again.")
+            show_login_button()
+            return
         st.write(f"Welcome {user_profile['displayName']}")
         st.write(f"Email: {user_profile['mail']}")
         # Display the chat application
@@ -21,16 +26,32 @@ def show_home_page():
     else:
         # If not logged in, show login button
         if st.button("Login with Azure AD"):
-            auth_url = get_authorization_url()
-            st.markdown(f'<a href="{auth_url}" target="_self">Please login using this link</a>', unsafe_allow_html=True)
+            show_login_button()
         else:
             # Handle the redirect (After login in Azure, Azure will redirect back to this URI with code)
             code = st.query_params.get("code")
             if code is not None:
-                result = get_token_from_code(code)
+                result = None
+                try:
+                    result = get_token_from_code(code)
+                except:
+                    st.write("Error: Unable to get token from code. Please try logging in again.")
+                    show_login_button()
+                    return
                 if "access_token" in result:
                     st.session_state.access_token = result['access_token']
                     st.rerun()
                 else:
                     st.write("Logout Successful !!")
+
+def show_login_button():
+    if st.button("Login with Azure AD"):
+        auth_url = None
+        try:
+                auth_url = get_authorization_url()
+        except:
+            st.write("Error: Unable to get authorization URL. Please try again.")
+            st.markdown(f'<a href="https://qna-news.azurewebsites.net/" target="_self">Please login using this link</a>', unsafe_allow_html=True)
+            return
+        st.markdown(f'<a href="{auth_url}" target="_self">Please login using this link</a>', unsafe_allow_html=True)
 show_home_page()

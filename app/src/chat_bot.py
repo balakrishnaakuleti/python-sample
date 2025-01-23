@@ -24,19 +24,36 @@ def show_chat_app():
     # Process the user input and respond when the user presses Enter (submit)
     st.session_state.messages.append({"role": "system", "content": system_prompt})
     if user_input:
+        # Length restricted to 1000 character
+        if len(user_input) > 1000:
+            st.write("Please keep your message under 1000 characters.")
+            return
         # Get the chatbot's response
         try:
+            relevant_news_article = None
             # PII detection and redaction
-            user_input = redact_pii(user_input)
-
+            try:
+                user_input = redact_pii(user_input)
+            except:
+                st.write("Error: Unable to redact PII. Please make sure No PII is shared as part of your query.")
             # AI Search
-            relevant_news_article = ai_search(user_input)
+            try:
+                relevant_news_article = ai_search(user_input)
+            except:
+                st.write("Error: Unable to get relevant news article. Please try again.")
+                return
 
             #Add redacted user utterance to the history
             st.session_state.messages.append({"role": "user", "content": user_input})
+
             # Append the user's message to the chat history
             # Call the OpenAI API to get a response
-            bot_reply = ai_answer(st.session_state.messages,relevant_news_article)
+            bot_reply = None
+            try:
+                bot_reply = ai_answer(st.session_state.messages,relevant_news_article)
+            except:
+                st.write("Error: Unable to get answer from the news article. Please try again.")
+                return
 
             # Append the assistant's response to the chat history
             st.session_state.messages.append({"role": "assistant", "content": bot_reply})
@@ -51,3 +68,4 @@ def show_chat_app():
         role = message["role"]
         if role != "system":
             st.write(role,": ",message["content"])
+show_chat_app()

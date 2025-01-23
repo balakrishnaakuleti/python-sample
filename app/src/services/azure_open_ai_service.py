@@ -29,4 +29,4 @@ def ai_answer(messages, relevant_news_article):
         # Extract the assistant's reply
         return response.choices[0].message.content
     except Exception as e:
-            return f"Error: {e}"
+            return f"Error performing completion request. The error details - : {e}"
