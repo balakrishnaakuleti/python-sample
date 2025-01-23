@@ -32,5 +32,5 @@ def show_home_page():
                     st.session_state.access_token = result['access_token']
                     st.rerun()
                 else:
-                    st.write("Error: " + result.get("error_description", "Unknown error"))
+                    st.write("Logout Successful !!")
 show_home_page()
