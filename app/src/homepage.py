@@ -23,14 +23,14 @@ def show_home_page():
         if st.button("Login with Azure AD"):
             auth_url = get_authorization_url()
             st.markdown(f'<a href="{auth_url}" target="_self">Please login using this link</a>', unsafe_allow_html=True)
-
-        # Handle the redirect (After login in Azure, Azure will redirect back to this URI with code)
-        code = st.query_params.get("code")
-        if code is not None:
-            result = get_token_from_code(code)
-            if "access_token" in result:
-                st.session_state.access_token = result['access_token']
-                st.rerun()
-            else:
-                st.write("Error: " + result.get("error_description", "Unknown error"))
+        else:
+            # Handle the redirect (After login in Azure, Azure will redirect back to this URI with code)
+            code = st.query_params.get("code")
+            if code is not None:
+                result = get_token_from_code(code)
+                if "access_token" in result:
+                    st.session_state.access_token = result['access_token']
+                    st.rerun()
+                else:
+                    st.write("Error: " + result.get("error_description", "Unknown error"))
 show_home_page()
