@@ -68,4 +68,3 @@ def show_chat_app():
         role = message["role"]
         if role != "system":
             st.write(role,": ",message["content"])
-show_chat_app()
