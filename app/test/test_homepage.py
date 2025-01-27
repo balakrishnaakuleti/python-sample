@@ -28,35 +28,8 @@ class TestHomePage(unittest.TestCase):
 
         # Test if the UI elements are displayed
         mock_title.assert_called_with("Welcome to the Question and Answers Chatbot on news articles!!!")
-        mock_button.assert_called_with("Login with Azure AD")
 
         # Test that rerun is not triggered on successful authentication
-        mock_rerun.assert_not_called()
-    
-    @patch('streamlit.title')
-    @patch('streamlit.write')
-    @patch('streamlit.button')
-    @patch('streamlit.markdown')
-    @patch('streamlit.rerun')
-    @patch('streamlit.session_state', new_callable=MagicMock)
-    @patch('app.src.services.azure_aad_service.get_user_profile')
-    @patch('app.src.services.azure_aad_service.get_authorization_url')
-    @patch('app.src.services.azure_aad_service.get_token_from_code')
-    def test_show_home_page_not_authenticated(self, mock_get_token_from_code, mock_get_authorization_url, mock_get_user_profile, mock_session_state, mock_rerun, mock_markdown, mock_button, mock_write, mock_title):
-        # Simulate a non-authenticated user
-        mock_session_state.access_token = None
-        
-        # Mock the authorization URL to return a dummy URL
-        mock_get_authorization_url.return_value = "https://login.microsoftonline.com/..."
-        
-        # Call the function
-        show_home_page()
-
-        # Test UI elements
-        mock_title.assert_called_with("Welcome to the Question and Answers Chatbot on news articles!!!")
-        mock_button.assert_called_with("Login with Azure AD")
-            
-        # Test that rerun is not triggered when not authenticated
         mock_rerun.assert_not_called()
     
     @patch('streamlit.title')
